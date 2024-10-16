@@ -14,7 +14,7 @@ SUDO_USER=${SUDO_USER:-$USER}
 USER_HOME=$(getent passwd $SUDO_USER | cut -d: -f6)
 
 # Read VPN configuration from vpn.conf file in the same directory as the script
-CONFIG_FILE="$SCRIPT_DIR/.vpn.conf"
+CONFIG_FILE=".vpn.conf"
 if [ ! -f "$CONFIG_FILE" ]; then
     echo "Configuration file $CONFIG_FILE not found!"
     exit 1
@@ -46,6 +46,9 @@ validate_config() {
 # Validate the configuration
 validate_config
 
+ifconfig eth0 mtu 1480
+rm $USER_HOME/.netExtender.log
+
 setup_routing() {
     echo "Setting up routing rules..."
     sysctl -w net.ipv4.ip_forward=1
@@ -72,10 +75,15 @@ setup_routing() {
     iptables -t nat -L -v
 }
 
-ifconfig eth0 mtu 1480
-rm $USER_HOME/.netExtender.log
-
 setup_routing
 
+
+
 echo "Starting netExtender. You will be prompted for the OTP if required."
-netExtender -M 1480 -u "$VPN_USERNAME" -d "$VPN_DOMAIN" -p "$VPN_PASSWORD" $VPN_SERVER
+echo "VPN_USERNAME: $VPN_USERNAME"
+echo "VPN_DOMAIN: $VPN_DOMAIN"
+echo "VPN_PASSWORD: $VPN_PASSWORD"
+echo "VPN_SERVER: $VPN_SERVER"
+echo "VPN_DNS: $VPN_DNS"
+
+netExtender -M 1480 -u "$VPN_USERNAME" -d "$VPN_DOMAIN" -p "$VPN_PASSWORD" $VPN_SERVER 
