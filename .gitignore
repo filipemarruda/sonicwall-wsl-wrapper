@@ -1,0 +1,8 @@
+.aider*
+# Ignore VPN configuration and routes files
+.routes.txt
+.vpn.conf
+.dmz.conf
+
+# Ignore all .aider.* files
+.aider.*
