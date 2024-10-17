@@ -43,6 +43,12 @@ This project provides scripts to set up and run a SonicWall VPN connection on a 
    - (Optional) Set `USER_HOME` to your WSL user home directory (e.g., /home/yourusername)
    - (Optional) Set `WSL_DISTRO_NAME` to your specific WSL distribution name (e.g., kali-linux)
 
+      To find your WSL distribution name, you can use the following command in PowerShell or Command Prompt:
+   
+         wsl -l
+   
+      `This will list all installed WSL distributions. Use the name exactly as it appears in this list.`
+
    Example:
    ```
    VPN_USERNAME=your_username
