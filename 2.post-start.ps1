@@ -51,13 +51,13 @@ Write-Host "Current Windows path: $windowsPath"
 $wslPath = Invoke-WSLCommand "wslpath -u '$windowsPath'"
 Write-Host "Converted WSL path: $wslPath"
 
-# Run VPN teardown script
-$vpnTeardownScript = Join-Path -Path $scriptPath -ChildPath ".vpn-setup.ps1"
-if (Test-Path $vpnTeardownScript) {
-    Write-Host "Executing VPN teardown script..."
-    & $vpnTeardownScript
+# Run VPN setup script
+$vpnSetupScript = Join-Path -Path $scriptPath -ChildPath ".vpn-setup.ps1"
+if (Test-Path $vpnSetupScript) {
+    Write-Host "Executing VPN setup script..."
+    & $vpnSetupScript
 } else {
-    Write-Host "Error: VPN teardown script not found at $vpnTeardownScript" -ForegroundColor Red
+    Write-Host "Error: VPN setup script not found at $vpnSetupScript" -ForegroundColor Red
 }
 
 # Execute firewall script in WSL
