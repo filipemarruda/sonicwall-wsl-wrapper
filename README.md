@@ -1,6 +1,20 @@
 # SonicWall VPN Setup
 
-This project provides scripts to set up and run a SonicWall VPN connection on a Windows machine using Windows Subsystem for Linux (WSL) and PowerShell.
+## Project Motivation
+
+This project was born out of a need to establish a secure VPN connection without compromising system performance. Many organizations require the installation of specific antivirus software on Windows machines to allow VPN connections. However, these antivirus programs can significantly slow down the system, especially on machines with limited resources.
+
+As a solution to this challenge, this project leverages Windows Subsystem for Linux (WSL) and PowerShell to set up and run a SonicWall VPN connection. By using this method, we can:
+
+1. Avoid installing resource-intensive antivirus software on the Windows machine.
+2. Maintain system performance while still ensuring a secure VPN connection.
+3. Provide a flexible and customizable VPN setup process.
+
+This approach is particularly beneficial for developers, IT professionals, and anyone working with resource-constrained Windows machines who need to connect to a SonicWall VPN without sacrificing system performance.
+
+## Project Overview
+
+This project provides scripts to set up and run a SonicWall VPN connection on a Windows machine using Windows Subsystem for Linux (WSL) and PowerShell. It offers a streamlined, performance-friendly alternative to traditional VPN setups that often require specific antivirus software.
 
 ## Installation
 
@@ -47,7 +61,7 @@ This project provides scripts to set up and run a SonicWall VPN connection on a 
    
          wsl -l
    
-      `This will list all installed WSL distributions. Use the name exactly as it appears in this list.`
+      This will list all installed WSL distributions. Use the name exactly as it appears in this list.
 
    Example:
    ```
@@ -117,3 +131,14 @@ Follow any on-screen prompts during each step to complete the VPN connection pro
 - When running `Run-1.start.bat`, be prepared to enter your One-Time Code (OTC) when prompted. This is a security measure required for connecting to the VPN.
 
 For any issues or additional configuration, please refer to the individual script files or contact your system administrator.
+
+## Benefits
+
+By using this WSL-based SonicWall VPN setup, you can:
+
+1. Maintain high system performance by avoiding resource-intensive antivirus software.
+2. Securely connect to your organization's VPN without compromising on security.
+3. Customize the VPN setup to fit your specific needs and network configuration.
+4. Easily manage and update your VPN connection process through simple configuration files.
+
+This solution is ideal for users who need a reliable, efficient, and customizable VPN setup without the overhead of additional security software.
