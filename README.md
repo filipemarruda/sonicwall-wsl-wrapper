@@ -65,30 +65,37 @@ This project provides scripts to set up and run a SonicWall VPN connection on a 
 
 ## Running the VPN
 
-The VPN setup and connection process is now divided into three steps, each executed by a separate batch file. Run these files in sequence from a Command Prompt or PowerShell window with administrator privileges.
+The VPN setup and connection process is divided into three steps, each executed by a separate batch file. You can run these files simply by double-clicking them in the File Explorer, or by running them from a Command Prompt or PowerShell window. Make sure to run them in sequence and with administrator privileges.
 
-1. Navigate to the project directory:
+1. Navigate to the `C:\sonicwall` directory in File Explorer.
+
+2. Double-click `Run-0.clean.bat`
+   This script will clean up any existing VPN connections and prepare the system for a new connection.
+
+3. Double-click `Run-1.start.bat`
+   This script will initiate the VPN connection. 
+   **Important:** You will be prompted to enter a One-Time Code (OTC). Please have your OTC ready before starting this step.
+
+4. Double-click `Run-2.post-start.bat`
+   This script will perform any necessary post-connection tasks, such as setting up routes.
+
+Alternatively, if you prefer using the Command Prompt or PowerShell:
+
+1. Open a Command Prompt or PowerShell window with administrator privileges.
+
+2. Navigate to the project directory:
    ```
    cd C:\sonicwall
    ```
 
-2. Run the cleaning script:
+3. Run the scripts in sequence:
    ```
    Run-0.clean.bat
-   ```
-   This script will clean up any existing VPN connections and prepare the system for a new connection.
-
-3. Run the VPN start script:
-   ```
    Run-1.start.bat
-   ```
-   This script will initiate the VPN connection.
-
-4. Run the post-start script:
-   ```
    Run-2.post-start.bat
    ```
-   This script will perform any necessary post-connection tasks, such as setting up routes.
+
+   Remember to have your One-Time Code (OTC) ready when running `Run-1.start.bat`.
 
 Follow any on-screen prompts during each step to complete the VPN connection process.
 
@@ -101,5 +108,6 @@ Follow any on-screen prompts during each step to complete the VPN connection pro
 - Always run the batch files in the specified sequence (0, 1, 2) to ensure proper setup and connection of the VPN.
 - If `USER_HOME` is not specified in the configuration, the script will use a default value (typically /root).
 - If `WSL_DISTRO_NAME` is not specified, the script will use the default WSL distribution.
+- When running `Run-1.start.bat`, be prepared to enter your One-Time Code (OTC) when prompted. This is a security measure required for connecting to the VPN.
 
 For any issues or additional configuration, please refer to the individual script files or contact your system administrator.
