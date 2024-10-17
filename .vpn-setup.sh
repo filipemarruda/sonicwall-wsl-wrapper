@@ -15,6 +15,9 @@ fi
 
 source "$CONFIG_FILE"
 
+# Use USER_HOME if set, otherwise use ~
+USER_HOME_DIR="${USER_HOME:-~}"
+
 # Function to validate configuration
 validate_config() {
     local missing_vars=()
