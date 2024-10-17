@@ -34,11 +34,25 @@ This project provides scripts to set up and run a SonicWall VPN connection on a 
    nano .vpn.conf
    ```
 
-8. Update the .vpn.conf file with your sensitive information:
-   - Replace `your_username` with your actual VPN username
-   - Replace `your_domain` with your actual VPN domain
-   - Replace `your_password` with your actual VPN password
-   - Replace `your_server_address` with your actual VPN server address
+8. Update the .vpn.conf file with your information:
+   - Set `VPN_USERNAME` to your VPN username
+   - Set `VPN_DNS` to your VPN DNS server
+   - Set `VPN_DOMAIN` to your VPN domain
+   - Set `VPN_PASSWORD` to your VPN password
+   - Set `VPN_SERVER` to your VPN server address
+   - (Optional) Set `USER_HOME` to your WSL user home directory (e.g., /home/yourusername)
+   - (Optional) Set `WSL_DISTRO_NAME` to your specific WSL distribution name (e.g., kali-linux)
+
+   Example:
+   ```
+   VPN_USERNAME=your_username
+   VPN_DNS=10.x.x.x
+   VPN_DOMAIN=your_domain.com
+   VPN_PASSWORD=your_password
+   VPN_SERVER=vpn.your_server.com
+   USER_HOME=/home/yourusername
+   WSL_DISTRO_NAME=your_wsl_distro
+   ```
 
    Note: Be cautious with sensitive information. Consider using environment variables or a secure password manager for production use.
 
@@ -51,37 +65,41 @@ This project provides scripts to set up and run a SonicWall VPN connection on a 
 
 ## Running the VPN
 
-1. Open WSL (Windows Subsystem for Linux).
+The VPN setup and connection process is now divided into three steps, each executed by a separate batch file. Run these files in sequence from a Command Prompt or PowerShell window with administrator privileges.
 
-2. Navigate to the project directory:
-   ```
-   cd /mnt/c/sonicwall
-   ```
-
-3. Run the VPN setup script:
-   ```
-   sudo ./vpn-setup.sh
-   ```
-
-4. Open a PowerShell window with administrator privileges.
-
-5. Navigate to the project directory:
+1. Navigate to the project directory:
    ```
    cd C:\sonicwall
    ```
 
-6. Run the VPN PowerShell script:
+2. Run the cleaning script:
    ```
-   .\vpn.ps1
+   Run-0.clean.bat
    ```
+   This script will clean up any existing VPN connections and prepare the system for a new connection.
 
-Follow any on-screen prompts to complete the VPN connection process.
+3. Run the VPN start script:
+   ```
+   Run-1.start.bat
+   ```
+   This script will initiate the VPN connection.
+
+4. Run the post-start script:
+   ```
+   Run-2.post-start.bat
+   ```
+   This script will perform any necessary post-connection tasks, such as setting up routes.
+
+Follow any on-screen prompts during each step to complete the VPN connection process.
 
 ## Notes
 
 - Ensure that WSL is installed and properly configured on your Windows machine before running these scripts.
 - The `install.sh` script must be run with sudo privileges in WSL.
-- The `vpn.ps1` script will automatically request administrator privileges if not run in an elevated PowerShell session.
+- All batch files (`Run-0.clean.bat`, `Run-1.start.bat`, and `Run-2.post-start.bat`) should be run with administrator privileges.
 - DMZ routes specified in .dmz.conf will be processed during VPN setup, routing traffic for these addresses through the local gateway instead of the VPN.
+- Always run the batch files in the specified sequence (0, 1, 2) to ensure proper setup and connection of the VPN.
+- If `USER_HOME` is not specified in the configuration, the script will use a default value (typically /root).
+- If `WSL_DISTRO_NAME` is not specified, the script will use the default WSL distribution.
 
 For any issues or additional configuration, please refer to the individual script files or contact your system administrator.
