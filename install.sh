@@ -1,11 +1,24 @@
 #!/bin/bash
-
 # SonicWall NetExtender Client for Linux Installation Script
 
 # Check if script is run as root
 if [ "$EUID" -ne 0 ]; then
     echo "Please run this script as root or using sudo."
     exit 1
+fi
+
+# Check if ppp is installed, if not install it
+if ! dpkg -s ppp &> /dev/null; then
+    echo "ppp is not installed. Installing ppp..."
+    apt update
+    apt install -y ppp
+    if [ $? -ne 0 ]; then
+        echo "Failed to install ppp. Please check your internet connection and try again."
+        exit 1
+    fi
+    echo "ppp installed successfully."
+else
+    echo "ppp is already installed."
 fi
 
 # Set the download URL
@@ -51,22 +64,19 @@ rm -R netExtenderClient
 echo "Creating default .vpn.conf file..."
 cat > .vpn.conf << EOL
 # SonicWall VPN Configuration File
-
 # VPN Username (replace with your actual username)
 VPN_USERNAME="your_username"
-
 # VPN Domain (replace with your actual domain)
 VPN_DOMAIN="your_domain"
-
 # VPN Password (replace with your actual password)
 # Note: Storing passwords in plain text is not recommended for production use.
 # Consider using a more secure method in a production environment.
 VPN_PASSWORD="your_password"
-
 # VPN Server address (replace with your actual server address)
 VPN_SERVER="your_server_address"
-
-# Additional configuration options can be added here as needed
+# Optional settings
+# USER_HOME="your_user_home"
+# WSL_DISTRO_NAME="your_wsl_distro_name"
 EOL
 
 echo "Installation completed successfully."
