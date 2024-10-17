@@ -26,7 +26,7 @@ fi
 
 # Extract the tarball
 echo "Extracting files..."
-tar zxvf "$FILENAME" -C ./netExtenderClient
+tar zxvf "$FILENAME"
 
 # Change to the extracted directory
 cd ./netExtenderClient
