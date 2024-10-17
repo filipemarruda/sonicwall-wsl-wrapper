@@ -15,11 +15,18 @@ if (-Not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 # Rest of your script starts here
 Write-Host "Running with administrator privileges"
 
-# Run VPN teardown script
-.\.vpn-teardown.ps1
+# Get the current script's directory
+$scriptPath = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition
 
-# Run VPN setup script
-.\.vpn-setup.ps1
+# Run VPN teardown script
+$vpnTeardownScript = Join-Path -Path $scriptPath -ChildPath ".vpn-teardown.ps1"
+
+if (Test-Path $vpnTeardownScript) {
+    Write-Host "Executing VPN teardown script..."
+    & $vpnTeardownScript
+} else {
+    Write-Host "Error: VPN teardown script not found at $vpnTeardownScript" -ForegroundColor Red
+}
 
 # Pause at the end of the script
 Write-Host "Press Enter to close this window..." -ForegroundColor Green

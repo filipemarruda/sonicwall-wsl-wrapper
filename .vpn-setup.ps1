@@ -62,17 +62,32 @@ function Get-CorrectWSLIP {
 $localGateway = Get-LocalGateway
 $localWSL_Ip = Get-CorrectWSLIP
 
-Write-Host "Local Gateway: $localGateway"
-Write-Host "Using WSL IP: $localWSL_Ip"
-
 # Read VPN configuration
-$vpnConfig = Get-Content -Path ".vpn.conf" | ConvertFrom-StringData
+$vpnConfigPath = Join-Path -Path $PSScriptRoot -ChildPath ".vpn.conf"
+$vpnConfig = Get-Content -Path $vpnConfigPath | ConvertFrom-StringData
+
 $vpnDNS = $vpnConfig.VPN_DNS
 
-# Use WSL command to fetch log content
-$logFileContent = wsl cat /home/filipemarruda/.netExtender.log
+# Check if USER_HOME is set in the config file
+if ($vpnConfig.ContainsKey('USER_HOME') -and $vpnConfig.USER_HOME) {
+    $userHomeDir = $vpnConfig.USER_HOME
+} else {
+    # If USER_HOME is not set, use /root as fallback
+    $userHomeDir = "/root"
+}
+
+# Check if WSL_DISTRO_NAME is set in the config file
+if ($vpnConfig.ContainsKey('WSL_DISTRO_NAME') -and $vpnConfig.WSL_DISTRO_NAME) {
+    $wslCommand = "wsl -d $($vpnConfig.WSL_DISTRO_NAME) -u root"
+} else {
+    $wslCommand = "wsl -u root"
+}
+
+# Diagnostic information
+$logFileContent = Invoke-Expression  "$wslCommand cat $userHomeDir/.netExtender.log"
 if ($logFileContent) {
     Write-Host "Successfully fetched log file content from WSL."
+
     # Extract routes from log content
     $routes = $logFileContent | Select-String -Pattern "\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}" | ForEach-Object { $_.Matches.Value }
     if ($routes) {
@@ -84,7 +99,7 @@ if ($logFileContent) {
         Write-Warning "No routes found in the log file."
     }
 } else {
-    Write-Warning "Failed to fetch log file content from WSL."
+    Write-Warning "Log file appears to be empty or inaccessible."
 }
 
 # Get the network adapter name
